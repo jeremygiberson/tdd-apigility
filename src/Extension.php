@@ -5,6 +5,7 @@ namespace Giberson\Tdd\Apigility;
 use Behat\Behat\Context\ServiceContainer\ContextExtension;
 use Behat\Testwork\ServiceContainer\Extension as ExtensionInterface;
 use Behat\Testwork\ServiceContainer\ExtensionManager;
+use Giberson\Tdd\Apigility\Context\Initializer\ApigilityConfigAwareInitializer;
 use Giberson\Tdd\Apigility\Context\Initializer\ConfigPluginManagerAwareInitializer;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -86,10 +87,14 @@ class Extension implements ExtensionInterface
 
     private function loadContextInitializer(ContainerBuilder $container)
     {
-        $definition = new Definition(ConfigPluginManagerAwareInitializer::class, array(
+        $plugin_definition = new Definition(ConfigPluginManagerAwareInitializer::class, array(
             new Reference(self::CONFIG_ID),
         ));
-        $definition->addTag(ContextExtension::INITIALIZER_TAG, array('priority' => 0));
-        $container->setDefinition('tdd_apigility.context_initializer', $definition);
+        $plugin_definition->addTag(ContextExtension::INITIALIZER_TAG, array('priority' => 0));
+        $container->setDefinition('tdd_apigility.context_initializer', $plugin_definition);
+
+        $config_definition = new Definition(ApigilityConfigAwareInitializer::class);
+        $config_definition->addTag(ContextExtension::INITIALIZER_TAG, array('priority' => 0));
+        $container->setDefinition('tdd_apigility.context_initializer_2', $config_definition);
     }
 }

@@ -2,6 +2,7 @@ default:
     suites:
         default:
             contexts:
+                - FeatureContext
                 - \Giberson\Tdd\Apigility\Context\Generator
     extensions:
         Giberson\Tdd\Apigility\Extension: ~

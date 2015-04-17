@@ -38,6 +38,6 @@ class ConfigPluginManagerAwareInitializer implements ContextInitializer
         $manager = new ConfigPluginManager();
         $manager->setService(Endpoint::class, new Endpoint);
         $manager->setAlias('endpoint', Endpoint::class);
-        $context->setBuilderPluginManager($manager);
+        $context->setConfigPluginManager($manager);
     }
 }

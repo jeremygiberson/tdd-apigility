@@ -12,10 +12,10 @@ interface ConfigPluginManagerAware
      * @param ConfigPluginManager $manager
      * @return mixed
      */
-    public function setBuilderPluginManager(ConfigPluginManager $manager);
+    public function setConfigPluginManager(ConfigPluginManager $manager);
 
     /**
      * @return ConfigPluginManager
      */
-    public function getBuilderPluginManager();
+    public function getConfigPluginManager();
 }

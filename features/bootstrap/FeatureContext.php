@@ -4,20 +4,28 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Giberson\Tdd\Apigility\Context\ApigilityConfigAware;
+use Giberson\Tdd\Apigility\Context\ApigilityConfigAwareTrait;
 
 /**
  * Defines application features from the specific context.
  */
-class FeatureContext implements Context, SnippetAcceptingContext
+class FeatureContext implements Context, SnippetAcceptingContext, ApigilityConfigAware
 {
+    use ApigilityConfigAwareTrait;
+
     /**
-     * Initializes context.
-     *
-     * Every scenario gets its own context instance.
-     * You can also pass arbitrary arguments to the
-     * context constructor through behat.yml.
+     * @Then /^configuration will contain "([^"]*)"$/
      */
-    public function __construct()
+    public function configurationWillContain($array_path)
     {
+        $config = $this->getApigilityConfig()->getArrayCopy();
+        $indexes = explode('/', $array_path);
+        while(!empty($indexes)){
+            $index = array_shift($indexes);
+            if(!isset($config[$index]))
+                throw new RuntimeException("$array_path is not set in configuration");
+            $config = $config[$index];
+        }
     }
 }
