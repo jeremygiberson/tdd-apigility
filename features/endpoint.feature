@@ -12,7 +12,7 @@ Feature: Endpoint steps
     Given a REST endpoint "admin/user"
     And a POST request is not allowed
     And UPDATE collection request is not allowed
-    Then configuration will contain "router/routes/admin_user"
-    And configuration will contain "zf-rest/admin_user\Controller"
+    Then configuration will contain "zf-rest/admin_user\Controller/entity_http_methods"
+    And configuration will contain "zf-rest/admin_user\Controller/collection_http_methods"
     And configuration "zf-rest/admin_user\Controller/entity_http_methods" will not contain "POST"
     And configuration "zf-rest/admin_user\Controller/collection_http_methods" will not contain "UPDATE"
