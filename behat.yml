@@ -1,0 +1,7 @@
+default:
+    suites:
+        default:
+            contexts:
+                - \Giberson\Tdd\Apigility\Context\Generator
+    extensions:
+        Giberson\Tdd\Apigility\Extension: ~
