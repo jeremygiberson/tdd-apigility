@@ -10,7 +10,15 @@ use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use Giberson\Tdd\Apigility\Config\Apigility;
 use Giberson\Tdd\Apigility\PluginManager\Config\Endpoint;
 
-class Generator implements Context, ConfigPluginManagerAware, ApigilityConfigAware
+/**
+ * Class Generator
+ * Defines steps used to generate apigility configuration
+ * @package Giberson\Tdd\Apigility\Context
+ */
+class Generator implements Context,
+    ConfigPluginManagerAware,
+    ApigilityConfigAware,
+    ApigilityStepsInterface
 {
     use ApigilityConfigAwareTrait;
     use ConfigPluginManagerAwareTrait;
@@ -73,9 +81,7 @@ class Generator implements Context, ConfigPluginManagerAware, ApigilityConfigAwa
         self::mergeConfig($this->getApigilityConfig());
     }
 
-    /**
-     * @Given /^a REST endpoint "([^"]*)"$/
-     */
+
     public function aRESTEndpoint($arg1)
     {
         /** @var Endpoint $endpoint */

@@ -8,7 +8,7 @@ use Giberson\Tdd\Apigility\Context\ApigilityConfigAware;
 use Giberson\Tdd\Apigility\Context\ApigilityConfigAwareTrait;
 
 /**
- * Defines application features from the specific context.
+ * Defines steps used to test the extension
  */
 class FeatureContext implements Context, SnippetAcceptingContext, ApigilityConfigAware
 {
