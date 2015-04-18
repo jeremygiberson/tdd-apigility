@@ -5,8 +5,9 @@ namespace Giberson\Tdd\Apigility;
 use Behat\Behat\Context\ServiceContainer\ContextExtension;
 use Behat\Testwork\ServiceContainer\Extension as ExtensionInterface;
 use Behat\Testwork\ServiceContainer\ExtensionManager;
-use Giberson\Tdd\Apigility\Context\Initializer\ApigilityConfigAwareInitializer;
+use Giberson\Tdd\Apigility\Context\Initializer\ConfigurationAwareInitializer;
 use Giberson\Tdd\Apigility\Context\Initializer\ConfigPluginManagerAwareInitializer;
+use Giberson\Tdd\Apigility\Context\Initializer\ProjectAwareInitializer;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -63,11 +64,14 @@ class Extension implements ExtensionInterface
     {
         // http://symfony.com/doc/current/components/config/definition.html#default-and-required-values
         $builder->children()
-            ->scalarNode('namespace')
-                ->defaultValue('Generated\\Apigility\\')
+            ->scalarNode('module_namespace')
+                ->defaultValue('Generated\\')
                 ->end()
-            ->scalarNode('generator_path')
-                ->defaultValue('generated_src')
+            ->scalarNode('module_path')
+                ->defaultValue('module/Generated')
+                ->end()
+            ->scalarNode('application_config_path')
+                ->defaultValue('config')
                 ->end();
     }
 
@@ -93,8 +97,14 @@ class Extension implements ExtensionInterface
         $plugin_definition->addTag(ContextExtension::INITIALIZER_TAG, array('priority' => 0));
         $container->setDefinition('tdd_apigility.context_initializer', $plugin_definition);
 
-        $config_definition = new Definition(ApigilityConfigAwareInitializer::class);
+        $config_definition = new Definition(ConfigurationAwareInitializer::class);
         $config_definition->addTag(ContextExtension::INITIALIZER_TAG, array('priority' => 0));
-        $container->setDefinition('tdd_apigility.context_initializer_2', $config_definition);
+        $container->setDefinition('tdd_apigility.context_initializer_config', $config_definition);
+
+        $project_definition = new Definition(ProjectAwareInitializer::class, array(
+            new Reference(self::CONFIG_ID),
+        ));
+        $project_definition->addTag(ContextExtension::INITIALIZER_TAG, array('priority' => 0));
+        $container->setDefinition('tdd_apigility.context_initializer_project', $project_definition);
     }
 }

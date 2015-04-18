@@ -11,7 +11,7 @@ use Behat\Behat\Tester\Exception\PendingException;
  * Class Tester
  * Defines steps that test generated apigility skeleton against the behat steps
  * that generated the skeleton
- * @package Giberson\Tdd\Apigility\Context
+ * @package Giberson\Tdd\Configuration\Context
  */
 class Tester implements Context, ApigilityStepsInterface
 {

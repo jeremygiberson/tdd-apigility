@@ -7,21 +7,25 @@ use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Testwork\Hook\Scope\AfterSuiteScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
-use Giberson\Tdd\Apigility\Config\Apigility;
+use Giberson\Tdd\Apigility\Config\Configuration;
 use Giberson\Tdd\Apigility\PluginManager\Config\Endpoint;
+use Giberson\Tdd\Apigility\Tooling\ProjectAware;
+use Giberson\Tdd\Apigility\Tooling\ProjectAwareTrait;
 
 /**
  * Class Generator
  * Defines steps used to generate apigility configuration
- * @package Giberson\Tdd\Apigility\Context
+ * @package Giberson\Tdd\Configuration\Context
  */
 class Generator implements Context,
     ConfigPluginManagerAware,
-    ApigilityConfigAware,
-    ApigilityStepsInterface
+    ConfigurationAware,
+    ApigilityStepsInterface,
+    ProjectAware
 {
-    use ApigilityConfigAwareTrait;
+    use ConfigurationAwareTrait;
     use ConfigPluginManagerAwareTrait;
+    use ProjectAwareTrait;
 
     /**
      * @var array merged apigility configuration
@@ -32,19 +36,10 @@ class Generator implements Context,
     protected $config = [];
 
     /**
-     * Generator constructor.
-     */
-    public function __construct()
-    {
-        echo "foo";
-    }
-
-
-    /**
      * Merge an array into the apigility config
-     * @param Apigility $config
+     * @param Configuration $config
      */
-    public static function mergeConfig(Apigility $config)
+    public static function mergeConfig(Configuration $config)
     {
         self::$merged_apigility_config = array_replace_recursive(
             self::$merged_apigility_config,
@@ -52,33 +47,16 @@ class Generator implements Context,
         );
     }
 
-    /**
-     * @BeforeSuite
-     */
-    public static function beforeSuite(BeforeSuiteScope $scope)
-    {
-        // load existing config from output path (if exists)
-    }
-
-    /**
-     * @AfterSuite
-     */
-    public static function afterSuite(AfterSuiteScope $scope)
-    {
-        // write updated config to output path
-        var_dump(self::$merged_apigility_config);
-    }
-
     /** @BeforeScenario */
     public function beforeScenario(BeforeScenarioScope $scope)
     {
-        $this->getApigilityConfig()->reset();
+        $this->getConfiguration()->reset();
     }
 
     /** @AfterScenario */
     public function afterScenario(AfterScenarioScope $scope)
     {
-        self::mergeConfig($this->getApigilityConfig());
+        $this->getProject()->update($this->getConfiguration());
     }
 
 
@@ -86,7 +64,7 @@ class Generator implements Context,
     {
         /** @var Endpoint $endpoint */
         $endpoint = $this->getConfigPluginManager()->get('endpoint');
-        $this->getApigilityConfig()->merge(
+        $this->getConfiguration()->merge(
             $endpoint->REST($arg1)
         );
     }

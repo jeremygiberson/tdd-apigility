@@ -6,7 +6,7 @@ namespace Giberson\Tdd\Apigility\Config;
 
 use ArrayObject;
 
-class Apigility extends ArrayObject
+class Configuration extends ArrayObject
 {
     /**
      * @param array|ArrayObject $array

@@ -6,17 +6,17 @@ namespace Giberson\Tdd\Apigility\Context\Initializer;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\Initializer\ContextInitializer;
-use Giberson\Tdd\Apigility\Config\Apigility;
-use Giberson\Tdd\Apigility\Context\ApigilityConfigAware;
+use Giberson\Tdd\Apigility\Config\Configuration;
+use Giberson\Tdd\Apigility\Context\ConfigurationAware;
 
-class ApigilityConfigAwareInitializer implements ContextInitializer
+class ConfigurationAwareInitializer implements ContextInitializer
 {
-    /** @var  Apigility */
+    /** @var  Configuration */
     protected $config;
 
     public function __construct()
     {
-        $this->config = new Apigility();
+        $this->config = new Configuration();
     }
 
     /**
@@ -26,10 +26,10 @@ class ApigilityConfigAwareInitializer implements ContextInitializer
      */
     public function initializeContext(Context $context)
     {
-        if (!$context instanceof ApigilityConfigAware) {
+        if (!$context instanceof ConfigurationAware) {
             return;
         }
 
-        $context->setApigilityConfig($this->config);
+        $context->setConfiguration($this->config);
     }
 }

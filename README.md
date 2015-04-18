@@ -6,7 +6,7 @@ This is a crazy application of Test-Driven-Development, a crazy literal applicat
 
 ## How it Works
 This package is a Behat extension that provides two special contexts that together 
-generate and test an Apigility configuration / skeleton. The extension's contexts
+generate and test an Configuration configuration / skeleton. The extension's contexts
 define gherkin steps you can use to describe the behavior of a RESTful or RPC endpoint.
  
 So as you write the tests for your service, you're also generating the code that powers
@@ -28,13 +28,13 @@ default:
     suites:
         generate:
             contexts:
-                - \Giberson\Tdd\Apigility\Context\Generator
+                - \Giberson\Tdd\Configuration\Context\Generator
         test:
             contexts:
                 - FeatureContext
-                - \Giberson\Tdd\Apigility\Context\Tester                
+                - \Giberson\Tdd\Configuration\Context\Tester                
     extensions:
-        Giberson\Tdd\Apigility\Extension: ~
+        Giberson\Tdd\Configuration\Extension: ~
 ```
 
 ## Usage
